@@ -1,0 +1,53 @@
+import { NextFunction, Response, Request } from 'express';
+import { Categories } from '../db/mongoConnector.js';
+import { ICreateCategoryRequest } from '../interfaces/requests/ICreateCategory.js';
+import { BadRequest } from '../errors/BadRequest.js';
+import { NotFound } from '../errors/NotFound.js';
+
+export const getCategoriesWithDrinks = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  Categories.find({})
+    .populate('drinkList')
+    .then((populatedCats) => res.send(populatedCats))
+    .catch((err) => next(err));
+};
+
+export const createCategory = (
+  req: ICreateCategoryRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { nameAM, nameEN, nameRU } = req.body;
+  if (!nameAM && !nameEN && !nameRU) {
+    throw new BadRequest('No required fields');
+  }
+  Categories.create(req.body)
+    .then((newCat) => res.send(newCat))
+    .catch((err) => next(err));
+};
+
+export const deleteCategory = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  req;
+  Categories.findByIdAndDelete(req.params.id)
+    .then((deletedCat) => {
+      if (!deletedCat) {
+        throw new NotFound('Category is not found');
+      }
+      res.send(deletedCat);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        const notFound = new NotFound('Invalid category ID');
+        next(notFound);
+      } else {
+        next(err);
+      }
+    });
+};

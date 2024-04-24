@@ -1,13 +1,13 @@
 import { Header } from '@/widgets/header';
 import { BaseLayout } from '@/widgets/layouts';
-import { ToDoListWidget } from '@/widgets/todo/ui/ToDoListWidget';
+import { MenuInfoWidget } from '@/widgets/menu/ui/MenuInfoWidget';
 
 function MainPage() {
   return (
-    <BaseLayout>
-      <Header />
-      <ToDoListWidget />
-    </BaseLayout>
+    <>
+      {/* <Header /> */}
+      <MenuInfoWidget />
+    </>
   );
 }
 

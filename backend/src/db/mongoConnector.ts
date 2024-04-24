@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
+import drinkSchema from './models/drinkSchema.js';
+import categorySchema from './models/categorySchema.js';
 
 dotenv.config();
 const currentDb =
@@ -22,9 +23,11 @@ db.on('error', (err) => {
   console.error(err);
 });
 
+const Drinks = mongoose.model('drinks', drinkSchema);
+const Categories = mongoose.model('categories', categorySchema);
 // const Users = mongoose.model('users', userSchema);
 // const Exercises = mongoose.model('exercises', exerciseSchema);
 // const Sentences = mongoose.model('sentences', sentenceSchema);
 // const Topics = mongoose.model('topics', topicSchema);
 
-//export { Users, Exercises, Sentences, Topics };
+export { Drinks, Categories };
