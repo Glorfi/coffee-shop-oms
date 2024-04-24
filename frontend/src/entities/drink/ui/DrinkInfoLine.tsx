@@ -7,15 +7,16 @@ import { getLocalDrinkInfo } from '../lib/getLocalDrinkInfo';
 
 interface IDrinkInfoLine {
   drink: IDrink;
+  lang: 'en' | 'ru' | 'hy';
 }
 
 export const DrinkInfoLine = (props: IDrinkInfoLine): JSX.Element => {
-  const { drink } = props;
+  const { drink, lang } = props;
   const prices = drink.size.map((size) => size.price);
   const pricesString = prices.join('/');
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string | undefined>('');
-  const lang = useAppSelector((state) => state.lang);
+  //const lang = useAppSelector((state) => state.lang);
 
   useEffect(() => {
     const localDrinkInfo = getLocalDrinkInfo(drink, lang);

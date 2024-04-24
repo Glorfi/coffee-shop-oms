@@ -1,20 +1,17 @@
+import { addCategoryList } from '@/entities/category';
 import { CategoryMenuCard } from '@/entities/category/ui/CategoryMenuCard';
-import { DrinkInfoLine, IDrink } from '@/entities/drink';
+import { IDrink, DrinkInfoLine } from '@/entities/drink';
+import { DeleteCategoryPopUp } from '@/features/category/delete-category';
+import { EditCategoryPopUp } from '@/features/category/edit-category';
 import { useGetCategoriesQuery } from '@/features/category/get-category';
-import { useAppSelector } from '@/shared/utils/hooks';
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Grid,
-  HStack,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/shared/utils/hooks';
+import { Box, Button, ButtonGroup, VStack } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 
-export const MenuInfoWidget = (): JSX.Element => {
-  const { data: categories } = useGetCategoriesQuery();
+export const MenuAdmindWidget = (): JSX.Element => {
+  const { data } = useGetCategoriesQuery();
+  const categories = useAppSelector((state) => state.categoryList);
+  const dispatch = useAppDispatch();
   const reduxLang = useAppSelector((state) => state.lang);
   const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
 
@@ -30,9 +27,13 @@ export const MenuInfoWidget = (): JSX.Element => {
     return sortedDrinks;
   }
 
+  const categoryFeatures = [EditCategoryPopUp, DeleteCategoryPopUp];
+
   useEffect(() => {
-    console.log(categories);
-  }, [categories]);
+    if (data) {
+      dispatch(addCategoryList(data));
+    }
+  }, [data]);
   return (
     <VStack
       p={'20px'}
@@ -79,6 +80,7 @@ export const MenuInfoWidget = (): JSX.Element => {
           lang={lang}
           width={'100%'}
           maxW={'400px'}
+          features={categoryFeatures}
         >
           {rankDrinksByPrice(cat.drinkList).map((drink) => (
             <DrinkInfoLine drink={drink} key={drink._id} lang={lang} />
