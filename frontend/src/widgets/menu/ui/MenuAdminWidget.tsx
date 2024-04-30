@@ -1,17 +1,26 @@
 import { addCategoryList } from '@/entities/category';
 import { CategoryMenuCard } from '@/entities/category/ui/CategoryMenuCard';
 import { IDrink, DrinkInfoLine } from '@/entities/drink';
-import { DeleteCategoryPopUp } from '@/features/category/delete-category';
-import { EditCategoryPopUp } from '@/features/category/edit-category';
-import { useGetCategoriesQuery } from '@/features/category/get-category';
+import {
+  CreateCategoryPopUp,
+  DeleteCategoryPopUp,
+  EditCategoryPopUp,
+  useGetCategoriesQuery,
+} from '@/features/category';
+import {
+  CreateDrinkPopUp,
+  DeleteDrinkyPopUp,
+  EditDrinkPopUp,
+} from '@/features/drink';
 import { useAppDispatch, useAppSelector } from '@/shared/utils/hooks';
-import { Box, Button, ButtonGroup, VStack } from '@chakra-ui/react';
+import { Button, ButtonGroup, HStack, VStack } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
 export const MenuAdmindWidget = (): JSX.Element => {
   const { data } = useGetCategoriesQuery();
   const categories = useAppSelector((state) => state.categoryList);
   const dispatch = useAppDispatch();
+
   const reduxLang = useAppSelector((state) => state.lang);
   const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
 
@@ -27,66 +36,82 @@ export const MenuAdmindWidget = (): JSX.Element => {
     return sortedDrinks;
   }
 
-  const categoryFeatures = [EditCategoryPopUp, DeleteCategoryPopUp];
+  const categoryFeatures = [
+    CreateDrinkPopUp,
+    EditCategoryPopUp,
+    DeleteCategoryPopUp,
+  ];
+
+  const drinkFeatures = [EditDrinkPopUp, DeleteDrinkyPopUp];
 
   useEffect(() => {
-    if (data) {
+    if (data && categories.length === 0) {
       dispatch(addCategoryList(data));
     }
   }, [data]);
   return (
-    <VStack
-      p={'20px'}
-      alignContent={'flex-start'}
-      alignItems={'flex-start'}
-      width={'100%'}
-      flexWrap={'wrap'}
-      gap={'20px'}
-      maxH={['unset', 'unset', '100vh', '100vh']}
-      position={'relative'}
-    >
-      <ButtonGroup
-        position={'fixed'}
-        top={'5'}
-        right={'5'}
-        backgroundColor={'white'}
+    <>
+      <HStack p={'0 20px'} mt={'10px'}>
+        <CreateCategoryPopUp />
+      </HStack>
+      <VStack
+        p={'20px'}
+        alignContent={'flex-start'}
+        alignItems={'flex-start'}
+        width={'100%'}
+        flexWrap={'wrap'}
+        gap={'20px'}
+        maxH={['unset', 'unset', 'calc(100vh - 64px)', 'calc(100vh-64px)']}
+        position={'relative'}
       >
-        <Button
-          size={'xs'}
-          onClick={() => setLang('hy')}
-          variant={lang === 'hy' ? 'solid' : 'outline'}
+        <ButtonGroup
+          position={'fixed'}
+          top={'5'}
+          right={'5'}
+          backgroundColor={'white'}
         >
-          AM
-        </Button>
-        <Button
-          size={'xs'}
-          onClick={() => setLang('en')}
-          variant={lang === 'en' ? 'solid' : 'outline'}
-        >
-          EN
-        </Button>
-        <Button
-          size={'xs'}
-          onClick={() => setLang('ru')}
-          variant={lang === 'ru' ? 'solid' : 'outline'}
-        >
-          RU
-        </Button>
-      </ButtonGroup>
-      {categories?.map((cat) => (
-        <CategoryMenuCard
-          key={cat._id}
-          category={cat}
-          lang={lang}
-          width={'100%'}
-          maxW={'400px'}
-          features={categoryFeatures}
-        >
-          {rankDrinksByPrice(cat.drinkList).map((drink) => (
-            <DrinkInfoLine drink={drink} key={drink._id} lang={lang} />
-          ))}
-        </CategoryMenuCard>
-      ))}
-    </VStack>
+          <Button
+            size={'xs'}
+            onClick={() => setLang('hy')}
+            variant={lang === 'hy' ? 'solid' : 'outline'}
+          >
+            AM
+          </Button>
+          <Button
+            size={'xs'}
+            onClick={() => setLang('en')}
+            variant={lang === 'en' ? 'solid' : 'outline'}
+          >
+            EN
+          </Button>
+          <Button
+            size={'xs'}
+            onClick={() => setLang('ru')}
+            variant={lang === 'ru' ? 'solid' : 'outline'}
+          >
+            RU
+          </Button>
+        </ButtonGroup>
+        {categories?.map((cat) => (
+          <CategoryMenuCard
+            key={cat._id}
+            category={cat}
+            lang={lang}
+            width={'100%'}
+            maxW={'400px'}
+            features={categoryFeatures}
+          >
+            {rankDrinksByPrice(cat.drinkList).map((drink) => (
+              <DrinkInfoLine
+                drink={drink}
+                key={drink._id}
+                lang={lang}
+                features={drinkFeatures}
+              />
+            ))}
+          </CategoryMenuCard>
+        ))}
+      </VStack>
+    </>
   );
 };

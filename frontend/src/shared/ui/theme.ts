@@ -17,13 +17,13 @@ const breakboints = {
   },
 };
 
-// const fonts = {
-//   heading: 'var(--font-lato)',
-//   body: 'var(--font-lato)',
-// };
+const fonts = {
+  heading: `'Nunito', 'Noto Sans Armenian', sans-serif`,
+  body: `'Nunito', 'Noto Sans Armenian', sans-serif`,
+};
 
 // const components = {
 //   Text: textTheme,
 // };
 
-export const theme = extendTheme({ colors, breakboints });
+export const theme = extendTheme({ colors, breakboints, fonts });

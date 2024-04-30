@@ -51,3 +51,32 @@ export const deleteCategory = (
       }
     });
 };
+
+export const updateCategory = (
+  req: ICreateCategoryRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { nameAM, nameEN, nameRU } = req.body;
+  if (!nameAM || !nameEN || !nameRU) {
+    throw new BadRequest('No required fields');
+  }
+  Categories.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    populate: 'drinkList',
+  })
+    .then((cat) => {
+      if (!cat) {
+        throw new NotFound('Category is not found');
+      }
+      res.send(cat);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        const notFound = new NotFound('Invalid category ID');
+        next(notFound);
+      } else {
+        next(err);
+      }
+    });
+};

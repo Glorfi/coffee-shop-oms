@@ -7,4 +7,5 @@ export const API_PATH = {
       ? 'http://localhost:4000/api'
       : 'http://192.168.43.59:4000/api',
   CATEGORIES: '/categories',
+  DRINKS: '/drinks',
 };

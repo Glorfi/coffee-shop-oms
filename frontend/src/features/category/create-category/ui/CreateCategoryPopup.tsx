@@ -1,9 +1,8 @@
-import { updateCategory } from '@/entities/category';
 import { ICategory } from '@/entities/category/model/types';
-import { useAppDispatch } from '@/shared/utils/hooks';
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   IconButton,
   Input,
@@ -17,26 +16,31 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { FaPlus } from 'react-icons/fa6';
 import { MdEdit } from 'react-icons/md';
-import { useUpdateCategoryMutation } from '../api/editCategory';
+import { useCreateCategoryMutation } from '../api/createCategory';
+import { useAppDispatch } from '@/shared/utils/hooks';
+import { addCategory } from '@/entities/category';
 
-interface IEditCategoryPopUp {
-  category: ICategory;
+interface ICreateCategoryPopUp {
+  // category: ICategory;
 }
 
-export const EditCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
-  const { category } = props;
+export const CreateCategoryPopUp = (
+  props: ICreateCategoryPopUp
+): JSX.Element => {
+  //  const { category } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formValues, setFormValues] = useState({
-    nameRU: category.nameRU,
-    nameEN: category.nameEN,
-    nameAM: category.nameAM,
+    nameRU: '',
+    nameEN: '',
+    nameAM: '',
   });
   const dispatch = useAppDispatch();
   const toast = useToast();
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [updateCat, { data, isLoading, isError }] = useUpdateCategoryMutation();
+  const [createCat, { data, isLoading, isError }] = useCreateCategoryMutation();
 
   function handleInputChange(e: any) {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -51,7 +55,7 @@ export const EditCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    updateCat({ id: category._id, body: formValues });
+    createCat(formValues);
   }
 
   useEffect(() => {
@@ -62,11 +66,11 @@ export const EditCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
     if (data) {
       onClose();
       setFormValues({
-        nameRU: data.nameRU,
-        nameEN: data.nameEN,
-        nameAM: data.nameAM,
+        nameRU: '',
+        nameEN: '',
+        nameAM: '',
       });
-      dispatch(updateCategory(data));
+      dispatch(addCategory(data));
     }
   }, [data]);
 
@@ -83,25 +87,25 @@ export const EditCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
   }, [isError]);
   return (
     <>
-      <IconButton
-        variant="ghost"
+      <Button
+        variant="solid"
         colorScheme="teal"
         size={'sm'}
-        aria-label="Call Sage"
-        fontSize="20px"
-        icon={<MdEdit />}
+        leftIcon={<FaPlus />}
         onClick={onOpen}
-      />
+      >
+        Создать категорию
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Редактировать категорию</ModalHeader>
+          <ModalHeader>Создать категорию</ModalHeader>
           <ModalCloseButton />
           <ModalBody
             as={'form'}
             onSubmit={handleSubmit}
-            id="updateCatForm"
+            id="createCatForm"
             noValidate
           >
             <FormControl isRequired>
@@ -138,12 +142,12 @@ export const EditCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
               colorScheme="teal"
               mr={3}
               isDisabled={!isFormValid}
-              form="updateCatForm"
+              form="createCatForm"
               type="submit"
               isLoading={isLoading}
               loadingText={'Загрузка...'}
             >
-              Сохранить
+              Создать
             </Button>
             <Button variant="ghost" onClick={onClose}>
               Отменить

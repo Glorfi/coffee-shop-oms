@@ -13,27 +13,30 @@ import {
   useToast,
   Text,
 } from '@chakra-ui/react';
-import { MdDelete, MdEdit } from 'react-icons/md';
-import { useDeleteCategoryMutation } from '../api/deleteCategory';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppDispatch } from '@/shared/utils/hooks';
-import { removeCategory } from '@/entities/category';
+import { MdDelete } from 'react-icons/md';
 
-interface IEditCategoryPopUp {
-  category: ICategory;
+import { useEffect } from 'react';
+
+import { useAppDispatch } from '@/shared/utils/hooks';
+
+import { useDeleteDrinkMutation } from '../api/deleteDrink';
+import { IDrink } from '@/entities/drink';
+import { removeDrink } from '@/entities/category';
+
+interface IDeleteDrinkPopUp {
+  drink: IDrink;
 }
 
-export const DeleteCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
-  const { category } = props;
+export const DeleteDrinkyPopUp = (props: IDeleteDrinkPopUp): JSX.Element => {
+  const { drink } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const dispatch = useAppDispatch();
-  const [deleteCat, { data, isLoading, isError }] = useDeleteCategoryMutation();
+  const [deleteDrink, { data, isLoading, isError }] = useDeleteDrinkMutation();
 
   useEffect(() => {
     if (data) {
-      dispatch(removeCategory(data));
+      dispatch(removeDrink(data));
     }
   }, [data]);
 
@@ -52,7 +55,7 @@ export const DeleteCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
     <>
       <IconButton
         variant="ghost"
-        size={'sm'}
+        size={'xs'}
         colorScheme="red"
         aria-label="Call Sage"
         fontSize="20px"
@@ -63,16 +66,18 @@ export const DeleteCategoryPopUp = (props: IEditCategoryPopUp): JSX.Element => {
       <Modal isOpen={isOpen} onClose={onClose} isCentered size={'sm'}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Удалить категорию "{category.nameRU}" ?</ModalHeader>
+          <ModalHeader>Удалить напиток "{drink.nameRU}" ?</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Text fontSize={"medium"}>Категория удалится со всеми напитками в ней</Text>
-          </ModalBody>
+          {/* <ModalBody>
+            <Text fontSize={'medium'}>
+              Категория удалится со всеми напитками в ней
+            </Text>
+          </ModalBody> */}
           <ModalFooter>
             <Button
               colorScheme="red"
               mr={3}
-              onClick={() => deleteCat(category._id)}
+              onClick={() => deleteDrink(drink._id)}
             >
               Да
             </Button>

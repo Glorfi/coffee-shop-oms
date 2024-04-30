@@ -14,7 +14,7 @@ export const AdminHeader = (): JSX.Element => {
         <Link as={ReactRouterLink} to={APP_PATHS.ADMIN} color={'white'}>
           Админка
         </Link>
-        <Link as={ReactRouterLink} to={APP_PATHS.MENU} color={'white'}>
+        <Link as={ReactRouterLink} to={APP_PATHS.ADMIN_MENU} color={'white'}>
           Меню
         </Link>
         <Link as={ReactRouterLink} to={APP_PATHS.DASHBOARD} color={'white'}>

@@ -1,16 +1,8 @@
 import { CategoryMenuCard } from '@/entities/category/ui/CategoryMenuCard';
 import { DrinkInfoLine, IDrink } from '@/entities/drink';
-import { useGetCategoriesQuery } from '@/features/category/get-category';
+import { useGetCategoriesQuery } from '@/features/category';
 import { useAppSelector } from '@/shared/utils/hooks';
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Grid,
-  HStack,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, ButtonGroup, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 export const MenuInfoWidget = (): JSX.Element => {

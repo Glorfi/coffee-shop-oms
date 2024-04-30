@@ -1,12 +1,12 @@
-import { ICategory } from '@/entities/category/model/types';
+import { IDrink } from '@/entities/drink';
 import { API_PATH } from '@/shared/constants/ApiPaths';
 import { mainApi } from '@/shared/utils/main-api-router';
 
 const getCatergories = mainApi.injectEndpoints({
   endpoints: (builder) => ({
-    deleteCategory: builder.mutation<ICategory, string>({
+    deleteDrink: builder.mutation<IDrink, string>({
       query: (id) => ({
-        url: `${API_PATH.CATEGORIES}/${id}`,
+        url: `${API_PATH.DRINKS}/${id}`,
         headers: {
           'Content-Type': 'application/json',
           // Authorization: `Bearer ${token}`,
@@ -17,4 +17,4 @@ const getCatergories = mainApi.injectEndpoints({
   }),
 });
 
-export const { useDeleteCategoryMutation } = getCatergories;
+export const { useDeleteDrinkMutation } = getCatergories;

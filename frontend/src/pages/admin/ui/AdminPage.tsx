@@ -3,12 +3,19 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink, LinkProps } from '@chakra-ui/react';
 import { APP_PATHS } from '@/shared/constants/AppPaths';
 import { AdminHeader } from '@/widgets/header';
+import { BGComponent } from '@/shared/ui/BgComponents/BgComponent';
 
 export const AdminPage = (): JSX.Element => {
   return (
     <>
+      <BGComponent />
       <AdminHeader />
-      <VStack m={'0 auto'} p={'20px 0'} maxW={'800px'} alignItems={'flex-start'}>
+      <VStack
+        m={'0 auto'}
+        p={'20px 0'}
+        maxW={'800px'}
+        alignItems={'flex-start'}
+      >
         <Text>
           Это страница вашей админки где можно управлять меню и заказами на
           соотвествующих страницах

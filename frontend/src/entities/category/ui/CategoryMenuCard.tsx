@@ -6,10 +6,8 @@ import {
   ButtonGroup,
 } from '@chakra-ui/react';
 import { ICategory } from '../model/types';
-import { ReactComponentElement, ReactNode, useEffect, useState } from 'react';
-import { useAppSelector } from '@/shared/utils/hooks';
+import { useEffect, useState } from 'react';
 import { getLocalCategory } from '../lib/getLocalCategory';
-import { features } from 'process';
 
 interface ICategoryMenuCard extends StackProps {
   category: ICategory;
@@ -26,11 +24,22 @@ export const CategoryMenuCard = (props: ICategoryMenuCard): JSX.Element => {
   useEffect(() => {
     const localCatName = getLocalCategory(category, lang);
     setName(localCatName);
-  }, [lang]);
+  }, [lang, category]);
 
   return (
-    <VStack alignItems={'flex-start'} {...rest}>
-      <HStack>
+    <VStack
+      alignItems={'flex-start'}
+      {...rest}
+      p={'10px'}
+      backgroundColor={'rgba(0 0 0 / 3%)'}
+      borderRadius={"10px"}
+      backdropFilter={"blur(2px)"}
+    >
+      <HStack
+        alignItems={'baseline'}
+        w={'100%'}
+        justifyContent={'space-between'}
+      >
         <Text color={'primary'} fontSize={'xx-large'} fontWeight={'bold'}>
           {name}
         </Text>

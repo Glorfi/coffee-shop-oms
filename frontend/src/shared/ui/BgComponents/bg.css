@@ -1,0 +1,35 @@
+.bgContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ced5d4;
+  opacity: 0.1;
+  background-image: repeating-radial-gradient(
+      circle at 0 0,
+      transparent 0,
+      #ced5d4 26px
+    ),
+    repeating-linear-gradient(#0e2e2b55, #0e2e2b);
+  width: 100%;
+  min-height: 100dvh;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bgContainer_client {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fdeddd;
+  opacity: 1;
+  background-image: repeating-radial-gradient(
+      circle at 0 0,
+      transparent 0,
+      #fdeddd 14px
+    ),
+    repeating-linear-gradient(#fefbf855, #fefbf8);
+  width: 100%;
+  min-height: 100dvh;
+  z-index: -1;
+  overflow: hidden;
+}

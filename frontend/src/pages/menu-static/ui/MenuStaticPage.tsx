@@ -1,3 +1,4 @@
+import { BGComponent } from '@/shared/ui/BgComponents/BgComponent';
 import { AdminHeader } from '@/widgets/header';
 import { MenuAdmindWidget, MenuInfoWidget } from '@/widgets/menu';
 
@@ -9,11 +10,15 @@ export const MenuStaticPage = (): JSX.Element => {
     <>
       {admin ? (
         <>
+          <BGComponent />
           <AdminHeader />
           <MenuAdmindWidget />
         </>
       ) : (
-        <MenuInfoWidget />
+        <>
+          <BGComponent />
+          <MenuInfoWidget />
+        </>
       )}
     </>
   );
