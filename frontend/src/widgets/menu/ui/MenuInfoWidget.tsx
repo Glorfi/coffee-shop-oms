@@ -1,14 +1,24 @@
+import { CategoryClientMenuCard } from '@/entities/category';
 import { CategoryMenuCard } from '@/entities/category/ui/CategoryMenuCard';
-import { DrinkInfoLine, IDrink } from '@/entities/drink';
+import { DrinkInfoLine, DrinkMenuLine, IDrink } from '@/entities/drink';
 import { useGetCategoriesQuery } from '@/features/category';
+import { SelectDrinkDrawer } from '@/features/drink';
 import { useAppSelector } from '@/shared/utils/hooks';
-import { Button, ButtonGroup, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  VStack,
+  Text,
+  HStack,
+  Slide,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 export const MenuInfoWidget = (): JSX.Element => {
   const { data: categories } = useGetCategoriesQuery();
-  const reduxLang = useAppSelector((state) => state.lang);
-  const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
+  const lang = useAppSelector((state) => state.lang.value);
 
   function rankDrinksByPrice(drinks: IDrink[]) {
     const sortedDrinks = [...drinks];
@@ -21,22 +31,24 @@ export const MenuInfoWidget = (): JSX.Element => {
 
     return sortedDrinks;
   }
+  const drinkFeatures = [SelectDrinkDrawer];
 
   useEffect(() => {
     console.log(categories);
   }, [categories]);
+
+  const orderWidget = useDisclosure();
   return (
     <VStack
-      p={'20px'}
       alignContent={'flex-start'}
       alignItems={'flex-start'}
       width={'100%'}
       flexWrap={'wrap'}
-      gap={'20px'}
-      maxH={['unset', 'unset', '100vh', '100vh']}
-      position={'relative'}
+      gap={'10px'}
+      //  maxH={['unset', 'unset', '100vh', '100vh']}
+      //position={'relative'}
     >
-      <ButtonGroup
+      {/* <ButtonGroup
         position={'fixed'}
         top={'5'}
         right={'5'}
@@ -63,9 +75,9 @@ export const MenuInfoWidget = (): JSX.Element => {
         >
           RU
         </Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
       {categories?.map((cat) => (
-        <CategoryMenuCard
+        <CategoryClientMenuCard
           key={cat._id}
           category={cat}
           lang={lang}
@@ -73,10 +85,39 @@ export const MenuInfoWidget = (): JSX.Element => {
           maxW={'400px'}
         >
           {rankDrinksByPrice(cat.drinkList).map((drink) => (
-            <DrinkInfoLine drink={drink} key={drink._id} lang={lang} />
+            <DrinkMenuLine
+              drink={drink}
+              key={drink._id}
+              lang={lang}
+              features={drinkFeatures}
+            />
           ))}
-        </CategoryMenuCard>
+        </CategoryClientMenuCard>
       ))}
+      {/* <Button position={'fixed'} onClick={orderWidget.onToggle}>
+        CLICKER
+      </Button>
+      <Slide direction="bottom" in={orderWidget.isOpen} style={{ zIndex: 10 }}>
+        <VStack
+          backgroundColor={'white'}
+          m={0}
+          p={'10px 20px'}
+          w={'100%'}
+          zIndex={5}
+          alignItems={'flex-end'}
+          borderTopRadius={'md'}
+        >
+          <HStack justifyContent={'space-between'} w={'100%'}>
+            <Text fontWeight={'semibold'} size="md">
+              Американо
+            </Text>
+            <Text fontWeight={'bold'} size="md">
+              1000/1200 ֏
+            </Text>
+          </HStack>
+          <Button colorScheme="darkGreen">Добавить в заказ</Button>
+        </VStack>
+      </Slide> */}
     </VStack>
   );
 };

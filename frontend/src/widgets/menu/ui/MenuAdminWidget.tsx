@@ -21,7 +21,7 @@ export const MenuAdmindWidget = (): JSX.Element => {
   const categories = useAppSelector((state) => state.categoryList);
   const dispatch = useAppDispatch();
 
-  const reduxLang = useAppSelector((state) => state.lang);
+  const reduxLang = useAppSelector((state) => state.lang.value);
   const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
 
   function rankDrinksByPrice(drinks: IDrink[]) {

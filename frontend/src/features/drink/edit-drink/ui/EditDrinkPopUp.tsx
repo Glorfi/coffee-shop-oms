@@ -148,7 +148,6 @@ export const EditDrinkPopUp = (props: IEditDrinkPopUp): JSX.Element => {
     if (data) {
       onClose();
       dispatch(updateDrink(data));
-      // заменить экшен
     }
   }, [data]);
 
