@@ -13,11 +13,11 @@ import { AppRouter } from './config/AppRouter.tsx';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* <SocketProvider> */}
-      <ChakraProvider theme={theme}>
-        <AppRouter />
-      </ChakraProvider>
-      {/* </SocketProvider> */}
+      <SocketProvider>
+        <ChakraProvider theme={theme}>
+          <AppRouter />
+        </ChakraProvider>
+      </SocketProvider>
     </Provider>
   </React.StrictMode>
 );

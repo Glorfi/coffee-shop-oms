@@ -33,12 +33,12 @@
     "@types/node": "^20.11.16",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
+    "dev": "ts-node-dev --respawn --transpile-only --loader ts-node/esm src/index.ts",
     "eslint": "^8.56.0",
     "husky": "^9.0.10",
     "nodemon": "^3.0.3",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
-    "dev": "ts-node-dev --respawn --transpile-only --loader ts-node/esm src/index.ts",
     "typescript": "^5.3.3"
   },
   "dependencies": {
@@ -51,7 +51,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
     "node-fetch": "^3.3.2",
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^1.2.2",
+    "socket.io": "^4.7.5"
   },
   "pre-commit": [
     "ts.check",

@@ -1,5 +1,4 @@
-import { IUITiltle } from "@/shared/constants/types/ui-title";
-
+import { IUITiltle } from '@/shared/constants/types/ui-title';
 
 export const VARIANT: IUITiltle = {
   ru: 'Вариант',
@@ -35,10 +34,10 @@ export const SIZE_LARGE: IUITiltle = {
   ru: 'Большой',
   en: 'Large',
   hy: 'Մեծ',
-}
+};
 
 export const ADD_TO_CART: IUITiltle = {
-  ru: 'Добавить в заказ',
-  en: 'Add to cart',
-  hy: 'Ավելացնել պատվերին',
-}
+  ru: 'Добавить',
+  en: 'Add',
+  hy: 'Ավելացնել',
+};

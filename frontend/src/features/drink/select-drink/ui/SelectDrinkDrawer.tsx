@@ -1,6 +1,6 @@
-import { IDrink, getLocalDrinkInfo } from '@/entities/drink';
+import { IDrink, ISelectDrink, getLocalDrinkInfo } from '@/entities/drink';
 import { HotDrinkIcon } from '@/shared/ui/icons/HotDrinkIcon';
-import { useAppSelector } from '@/shared/utils/hooks';
+import { useAppDispatch, useAppSelector } from '@/shared/utils/hooks';
 import { PhoneIcon } from '@chakra-ui/icons';
 import {
   useDisclosure,
@@ -23,9 +23,8 @@ import {
   Radio,
   Box,
 } from '@chakra-ui/react';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { FaMinus, FaPlus, FaRegSnowflake } from 'react-icons/fa6';
-import { TbFlame } from 'react-icons/tb';
+import { useEffect, useState } from 'react';
+import { FaMinus, FaPlus } from 'react-icons/fa6';
 import {
   ADD_TO_CART,
   SIZE,
@@ -36,6 +35,8 @@ import {
   VARIANT_HOT,
 } from '../model/localized-titles';
 
+import { addDrinkToOrder } from '@/entities/order';
+
 interface ISelectDrinkDrawer {
   drink: IDrink;
 }
@@ -43,18 +44,19 @@ interface ISelectDrinkDrawer {
 export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
   const { drink } = props;
   const lang = useAppSelector((state) => state.lang.value);
+  const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   const [name, setName] = useState<string>(getLocalDrinkInfo(drink, lang).name);
-  //const [variant, setVariant] = useState<string>(getLocalUI(VARIANT, lang));
 
   const [quantity, setQuantity] = useState<number>(1);
   const [price, setPrice] = useState<string>(drink.size[0].price.toString());
-  const [selectedDrink, setSelectedDrink] = useState<any>({
-    drink: drink._id,
-    variant: "",
-    size: '',
-    quantity: quantity
+  const [selectedDrink, setSelectedDrink] = useState<ISelectDrink>({
+    drink: drink,
+    variant: drink.variant[0],
+    size: drink.size[0].name,
+    quantity: quantity,
+    price: parseInt(price),
   });
 
   function handleIncrement() {
@@ -70,16 +72,29 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
       setQuantity(quantity - 1);
     }
   }
-  function handleQuantityInputChange(e: ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.value);
+  // function handleQuantityInputChange(e: ChangeEvent<HTMLInputElement>) {
+  //   console.log(e.target.value);
 
-    if (isNaN(parseInt(e.target.value))) {
-      setQuantity(1);
-    }
-    if (parseInt(e.target.value) > 10) {
-      setQuantity(10);
-    }
-    setQuantity(parseInt(e.target.value));
+  //   if (isNaN(parseInt(e.target.value))) {
+  //     setQuantity(1);
+  //   }
+  //   if (parseInt(e.target.value) > 10) {
+  //     setQuantity(10);
+  //   }
+  //   setQuantity(parseInt(e.target.value));
+  // }
+
+  function handleVariantChange(value: string) {
+    setSelectedDrink({ ...selectedDrink, variant: value });
+  }
+
+  function handleSizeChange(value: string) {
+    setSelectedDrink({ ...selectedDrink, size: value });
+  }
+
+  function onAddButtonClick() {
+    dispatch(addDrinkToOrder(selectedDrink));
+    onClose();
   }
 
   useEffect(() => {
@@ -87,7 +102,31 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
   }, [lang]);
 
   useEffect(() => {
-    !isOpen ? setPrice(drink.size[0].price.toString()) : null;
+    setSelectedDrink({ ...selectedDrink, quantity: quantity });
+  }, [quantity]);
+
+  useEffect(() => {
+    const drinkObj = drink.size.find(
+      (item) => item.name === selectedDrink.size
+    );
+    if (drinkObj) {
+      setPrice(drinkObj.price.toString());
+      setSelectedDrink({ ...selectedDrink, price: drinkObj.price });
+    }
+  }, [selectedDrink.size]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setPrice(drink.size[0].price.toString()),
+        setSelectedDrink({
+          drink: drink,
+          variant: drink.variant[0],
+          size: drink.size[0].name,
+          quantity: 1,
+          price: parseInt(price),
+        });
+      setQuantity(1);
+    }
   }, [isOpen]);
 
   return (
@@ -123,6 +162,7 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
                 defaultValue={drink.variant[0]}
                 display={'flex'}
                 flexDirection={'column'}
+                onChange={handleVariantChange}
               >
                 {drink.variant.map((variant, index) => {
                   if (variant === 'cold') {
@@ -155,17 +195,17 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
                 {SIZE[lang]}
               </Text>
               <RadioGroup
-                defaultValue={drink.size[0].price.toString()}
+                defaultValue={drink.size[0].name}
                 display={'flex'}
                 flexDirection={'column'}
-                onChange={setPrice}
+                onChange={handleSizeChange}
               >
                 {drink.size.map((size, index) => {
                   if (size.name === 'regular') {
                     return (
                       <Radio
                         key={index}
-                        value={size.price.toString()}
+                        value={size.name}
                         colorScheme="darkGreen"
                       >
                         {SIZE_REGULAR[lang]}
@@ -175,7 +215,7 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
                     return (
                       <Radio
                         key={index}
-                        value={size.price.toString()}
+                        value={size.name}
                         colorScheme="darkGreen"
                       >
                         {SIZE_LARGE[lang]}
@@ -231,7 +271,11 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
                   />
                 </InputRightElement>
               </InputGroup>
-              <Button colorScheme="darkGreen" w={'100%'}>
+              <Button
+                colorScheme="darkGreen"
+                w={'100%'}
+                onClick={onAddButtonClick}
+              >
                 {ADD_TO_CART[lang]}
               </Button>
             </HStack>
@@ -243,33 +287,3 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
     </>
   );
 };
-
-{
-  /* <Drawer
-  isOpen={isOpen}
-  placement="bottom"
-  onClose={onClose}
-  blockScrollOnMount={false}
->
-  <DrawerOverlay backgroundColor={'blackAlpha.200'} />
-  <DrawerContent
-    borderRadius={'10'}
-    backgroundColor={'whiteAlpha.900'}
-    backdropFilter={'blur(2px)'}
-  >
-    <DrawerCloseButton />
-    <DrawerHeader>Create your account</DrawerHeader>
-
-    <DrawerBody>
-      <Text>Hello Yopta!</Text>
-    </DrawerBody>
-
-    <DrawerFooter>
-      <Button variant="outline" mr={3} onClick={onClose}>
-        Cancel
-      </Button>
-      <Button colorScheme="blue">Save</Button>
-    </DrawerFooter>
-  </DrawerContent>
-</Drawer>; */
-}

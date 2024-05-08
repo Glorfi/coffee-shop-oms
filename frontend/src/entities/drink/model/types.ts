@@ -18,3 +18,11 @@ interface ISize {
   price: number;
   _id: string;
 }
+
+export interface ISelectDrink {
+  drink: IDrink;
+  variant: 'hot' | 'cold';
+  size: 'regular' | 'large';
+  quantity: number;
+  price: number;
+}

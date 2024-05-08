@@ -3,6 +3,7 @@ import { CategoryMenuCard } from '@/entities/category/ui/CategoryMenuCard';
 import { DrinkInfoLine, DrinkMenuLine, IDrink } from '@/entities/drink';
 import { useGetCategoriesQuery } from '@/features/category';
 import { SelectDrinkDrawer } from '@/features/drink';
+
 import { useAppSelector } from '@/shared/utils/hooks';
 import {
   Box,
@@ -94,6 +95,7 @@ export const MenuInfoWidget = (): JSX.Element => {
           ))}
         </CategoryClientMenuCard>
       ))}
+
       {/* <Button position={'fixed'} onClick={orderWidget.onToggle}>
         CLICKER
       </Button>

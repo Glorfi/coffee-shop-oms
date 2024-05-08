@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { socket } from './socket';
 import { useAppDispatch } from '@/shared/utils/hooks';
-import { ISocketResponse } from '@/entities/todo/models/types';
-import { updateToDo } from '@/entities/todo/lib/toDoListSlice';
+// import { ISocketResponse } from '@/entities/todo/models/types';
+
 import { useToast } from '@chakra-ui/react';
 
 export const SocketProvider = ({
@@ -32,24 +32,19 @@ export const SocketProvider = ({
       });
     }
 
-    function onUpdate(data: ISocketResponse) {
-      dispatch(updateToDo(data));
-    }
-
     function onFooEvent(value: any) {
       setFooEvents((previous: any) => [...previous, value]);
     }
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on('update-todo-progress', (data) => onUpdate(data));
 
     socket.on('foo', onFooEvent);
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect');
-      socket.off('update-todo-progress', (data) => onUpdate(data));
+
       socket.off('foo', onFooEvent);
     };
   }, []);

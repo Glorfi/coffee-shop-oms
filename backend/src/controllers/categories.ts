@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { Categories } from '../db/mongoConnector.js';
+import { Categories, Drinks } from '../db/mongoConnector.js';
 import { ICreateCategoryRequest } from '../interfaces/requests/ICreateCategory.js';
 import { BadRequest } from '../errors/BadRequest.js';
 import { NotFound } from '../errors/NotFound.js';
@@ -40,7 +40,13 @@ export const deleteCategory = (
       if (!deletedCat) {
         throw new NotFound('Category is not found');
       }
-      res.send(deletedCat);
+      Drinks.deleteMany({ categoryId: deletedCat._id })
+        .then(() => {
+          res.send(deletedCat);
+        })
+        .catch((err) => {
+          next(err);
+        });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
