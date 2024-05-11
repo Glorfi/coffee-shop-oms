@@ -12,3 +12,20 @@ export interface IDrinkSelection {
   quantity: number;
   price: number;
 }
+
+interface IDrinkPlaced {
+  drink: IDrink;
+  variant: 'hot' | 'cold';
+  size: 'regular' | 'large';
+  quantity: number;
+  price: number;
+}
+export interface IOrder {
+  orderNumber: number;
+  drinks: IDrinkPlaced[];
+  status: 'created' | 'processing' | 'ready' | 'delivered';
+  totalPrice: number;
+  _id: string;
+  createdAt: string;
+  __v: number;
+}

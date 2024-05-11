@@ -26,7 +26,7 @@ app.use((err: any, req: any, res: any, next: any) => {
   }
   next(err);
 });
-const io = initializeSocket(server);
+initializeSocket(server);
 
 server.listen(4000, () => {
   console.log('Server is running at http://localhost:4000');

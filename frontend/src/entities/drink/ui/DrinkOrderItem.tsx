@@ -20,11 +20,12 @@ import { SIZE, VARIANT } from '../model/locolized-drink-order-titles';
 interface IDrinkOrderItem {
   orderItem: ISelectDrink;
   lang: 'en' | 'ru' | 'hy';
-  toggleFeature: React.ComponentType<any>;
+  toggleFeature?: React.ComponentType<any>;
+  readonly?: boolean;
 }
 
 export const DrinkOrderItem = (props: IDrinkOrderItem): JSX.Element => {
-  const { orderItem, lang, toggleFeature: ToggleFeature } = props;
+  const { orderItem, lang, toggleFeature: ToggleFeature, readonly } = props;
 
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string | undefined>('');
@@ -68,8 +69,7 @@ export const DrinkOrderItem = (props: IDrinkOrderItem): JSX.Element => {
           )}
         </VStack>
         <HStack>
-          {' '}
-          <ToggleFeature orderItem={orderItem} />
+          {ToggleFeature && <ToggleFeature orderItem={orderItem} readonly={readonly} />}
         </HStack>
       </HStack>
       <Divider opacity={1} colorScheme="darkGreen" />

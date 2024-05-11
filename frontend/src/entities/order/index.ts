@@ -1,3 +1,4 @@
+export type { IOrder, IOrderForm } from './model/types';
 export {
   orderFormSlice,
   addDrinkToOrder,

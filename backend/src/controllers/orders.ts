@@ -1,6 +1,10 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Drinks, Orders } from '../db/mongoConnector.js';
-import { ICreateOrder } from '../interfaces/requests/ICreateOrder.js';
+import {
+  ICreateOrder,
+  IDrinkOrder,
+} from '../interfaces/requests/ICreateOrder.js';
+import { NotFound } from '../errors/NotFound.js';
 
 // const getNextOrderNumber = (): Promise<number> => {
 //   return new Promise((resolve, reject) => {
@@ -21,6 +25,22 @@ import { ICreateOrder } from '../interfaces/requests/ICreateOrder.js';
 //   });
 // };
 
+export const getOrderById = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  Orders.findById(req.params.id)
+    .populate({ path: 'drinks.drink', model: 'drinks' })
+    .then((order: any) => {
+      if (!order) {
+        throw new NotFound('Order is not found');
+      }
+      res.send(order);
+    })
+    .catch((err) => next(err));
+};
+
 export const placeOrder = (
   req: ICreateOrder,
   res: Response,
@@ -31,22 +51,49 @@ export const placeOrder = (
     status: 'created',
   };
 
-  Orders.findOne({}, { orderNumber: 1 }, { sort: { orderNumber: -1 } }) // Найти максимальный порядковый номер заказа
+  Orders.findOne({}, { orderNumber: 1 }, { sort: { orderNumber: -1 } })
     .then((maxOrder: any) => {
       if (!maxOrder) {
-        orderData.orderNumber = 1; // Если нет заказов в базе данных, начните с 1
+        orderData.orderNumber = 1;
       } else {
-        orderData.orderNumber = (maxOrder.orderNumber % 99) + 1; // Увеличить порядковый номер заказа на 1, перезапустить при достижении 99
+        orderData.orderNumber = (maxOrder.orderNumber % 99) + 1;
       }
-      return Orders.create(orderData); // Создать заказ
+      return Orders.create(orderData);
     })
     .then((order) => {
-      return Orders.populate(order, { path: 'drinks.drink', model: 'drinks' }); // Заполнить данные о напитках в заказе
+      return Orders.populate(order, { path: 'drinks.drink', model: 'drinks' });
     })
     .then((populatedOrder) => {
-      res.send(populatedOrder); // Отправить ответ с заполненным заказом
+      res.send(populatedOrder);
     })
     .catch((err) => {
-      next(err); // Обработать ошибку
+      next(err);
+    });
+};
+
+export const placeOrderSocket = (
+  orderData: IDrinkOrder,
+  res: any,
+  next: any
+) => {
+  orderData.status = 'created';
+
+  Orders.findOne({}, { orderNumber: 1 }, { sort: { orderNumber: -1 } })
+    .then((maxOrder: any) => {
+      if (!maxOrder) {
+        orderData.orderNumber = 1;
+      } else {
+        orderData.orderNumber = (maxOrder.orderNumber % 99) + 1;
+      }
+      return Orders.create(orderData);
+    })
+    .then((order) => {
+      return Orders.populate(order, { path: 'drinks.drink', model: 'drinks' });
+    })
+    .then((populatedOrder) => {
+      res(populatedOrder);
+    })
+    .catch((err) => {
+      next(err);
     });
 };

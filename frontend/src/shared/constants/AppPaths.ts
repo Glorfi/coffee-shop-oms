@@ -6,4 +6,5 @@ export const APP_PATHS = {
   ADMIN: '/admin',
   ADMIN_MENU: '/admin/menu',
   DASHBOARD: '/dashboard',
+  ORDER_STATUS: '/orders/:id',
 };

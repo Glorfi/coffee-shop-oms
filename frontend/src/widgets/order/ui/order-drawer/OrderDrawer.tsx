@@ -1,9 +1,8 @@
 import { DrinkOrderItem } from '@/entities/drink';
-import { useAppSelector } from '@/shared/utils/hooks';
+import { useAppDispatch, useAppSelector } from '@/shared/utils/hooks';
 import {
   Box,
   Button,
-  ButtonGroup,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -11,26 +10,40 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Input,
   useDisclosure,
   Text,
-  VStack,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import { QuantityToggler } from '../../../features/order/change-drink-quantity/ui/QuantityToggler';
-import {
-  BUTTON_MAKE_ORDER_TITLE,
-  BUTTON_OPEN_TITLE,
-} from '../model/locolized-ui-titles';
+import { useEffect } from 'react';
+
+
+import { QuantityToggler, usePlaceOrderMutation } from '@/features/order';
+import { socketInstance } from '@/shared/socket/socket';
+import { useNavigate } from 'react-router-dom';
+import { BUTTON_MAKE_ORDER_TITLE, BUTTON_OPEN_TITLE } from './locolized-ui-titles';
 
 export const CreateOrderDrawer = (): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const orderForm = useAppSelector((state) => state.orderForm);
   const lang = useAppSelector((state) => state.lang.value);
+  const [sendOrder, { data, error }] = usePlaceOrderMutation();
+  const navigate = useNavigate();
+
+  const handlePlaceOrder = () => {
+    sendOrder(orderForm);
+  };
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      navigate(`/orders/${data._id}`);
+    }
+  }, [data]);
 
   useEffect(() => {
     orderForm.drinks.length === 0 ? onClose() : null;
-  }, [orderForm.drinks]);
+  }, [orderForm.drinks.length]);
+
   return (
     <>
       <Box
@@ -93,7 +106,11 @@ export const CreateOrderDrawer = (): JSX.Element => {
               fontWeight={'bold'}
               fontSize={'xl'}
             >{`${orderForm.totalPrice} ֏`}</Text>
-            <Button colorScheme="darkGreen" gridColumn={'2/5'}>
+            <Button
+              colorScheme="darkGreen"
+              gridColumn={'2/5'}
+              onClick={handlePlaceOrder}
+            >
               {BUTTON_MAKE_ORDER_TITLE[lang]}
             </Button>
           </DrawerFooter>
