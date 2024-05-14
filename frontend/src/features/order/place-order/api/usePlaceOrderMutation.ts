@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/shared/utils/hooks';
-import { placeOrder } from '../../api/OrderSocketSlice';
 import { IOrderForm } from '@/entities/order';
+import { placeOrder } from '../../api/orderSocketSlice';
 
 export const usePlaceOrderMutation = () => {
   const dispatch = useAppDispatch();

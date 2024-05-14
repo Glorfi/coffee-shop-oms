@@ -53,7 +53,7 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
   const [price, setPrice] = useState<string>(drink.size[0].price.toString());
   const [selectedDrink, setSelectedDrink] = useState<ISelectDrink>({
     drink: drink,
-    variant: drink.variant[0],
+    variant: drink.variant[0] === 'hot' || 'cold' ? drink.variant[0] : 'hot',
     size: drink.size[0].name,
     quantity: quantity,
     price: parseInt(price),
@@ -84,11 +84,11 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
   //   setQuantity(parseInt(e.target.value));
   // }
 
-  function handleVariantChange(value: string) {
+  function handleVariantChange(value: 'hot' | 'cold') {
     setSelectedDrink({ ...selectedDrink, variant: value });
   }
 
-  function handleSizeChange(value: string) {
+  function handleSizeChange(value: 'regular' | 'large') {
     setSelectedDrink({ ...selectedDrink, size: value });
   }
 

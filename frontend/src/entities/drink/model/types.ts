@@ -8,13 +8,13 @@ export interface IDrink {
   descriptionEN?: string;
   descriptionAM?: string;
   categoryId: string;
-  variant: string[];
+  variant: Array<'hot' | 'cold'>;
   size: ISize[];
   __v: number;
 }
 
 interface ISize {
-  name: string;
+  name: 'regular' | 'large';
   price: number;
   _id: string;
 }
