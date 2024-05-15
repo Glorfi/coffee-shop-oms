@@ -21,8 +21,8 @@ export const MenuAdmindWidget = (): JSX.Element => {
   const categories = useAppSelector((state) => state.categoryList);
   const dispatch = useAppDispatch();
 
-  const reduxLang = useAppSelector((state) => state.lang.value);
-  const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
+  const lang = useAppSelector((state) => state.lang.value);
+ // const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
 
   function rankDrinksByPrice(drinks: IDrink[]) {
     const sortedDrinks = [...drinks];
@@ -64,34 +64,6 @@ export const MenuAdmindWidget = (): JSX.Element => {
         maxH={['unset', 'unset', 'calc(100vh - 64px)', 'calc(100vh-64px)']}
         position={'relative'}
       >
-        <ButtonGroup
-          position={'fixed'}
-          top={'5'}
-          right={'5'}
-          backgroundColor={'white'}
-        >
-          <Button
-            size={'xs'}
-            onClick={() => setLang('hy')}
-            variant={lang === 'hy' ? 'solid' : 'outline'}
-          >
-            AM
-          </Button>
-          <Button
-            size={'xs'}
-            onClick={() => setLang('en')}
-            variant={lang === 'en' ? 'solid' : 'outline'}
-          >
-            EN
-          </Button>
-          <Button
-            size={'xs'}
-            onClick={() => setLang('ru')}
-            variant={lang === 'ru' ? 'solid' : 'outline'}
-          >
-            RU
-          </Button>
-        </ButtonGroup>
         {categories?.map((cat) => (
           <CategoryMenuCard
             key={cat._id}

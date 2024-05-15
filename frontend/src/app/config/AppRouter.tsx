@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { routes } from './routes';
 import { APP_PATHS } from '@/shared/constants/AppPaths';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { Spinner } from '@chakra-ui/react';
 
 export const AppRouter = (): JSX.Element => {
   const admin = window.localStorage.getItem('admin');
@@ -17,7 +18,12 @@ export const AppRouter = (): JSX.Element => {
                 page.protected && !admin ? (
                   <Navigate to={APP_PATHS.AUTH} replace />
                 ) : (
-                  <page.element />
+                  <Suspense
+                    fallback={<Spinner />}
+                    key={`${page.path}_${index}`}
+                  >
+                    <page.element />
+                  </Suspense>
                 )
               }
               key={`${page.path}_${index}`}

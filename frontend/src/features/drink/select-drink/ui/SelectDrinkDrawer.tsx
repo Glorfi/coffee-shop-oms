@@ -150,6 +150,8 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
           borderRadius={'10'}
           backgroundColor={'whiteAlpha.900'}
           backdropFilter={'blur(2px)'}
+          maxW={"580px !important"}
+          m={"0 auto"}
         >
           {/* <DrawerCloseButton /> */}
           <DrawerHeader display={'grid'} gridTemplateColumns={'1fr 1fr'}>
@@ -227,7 +229,6 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
               </RadioGroup>
             </Box>
           </DrawerHeader>
-
           <DrawerBody display={'flex'} flexDirection={'column'} gap={'8px'}>
             <HStack justifyContent={'space-between'} w={'100%'}>
               <Text fontWeight={'bold'} fontSize="lg">
@@ -280,8 +281,6 @@ export const SelectDrinkDrawer = (props: ISelectDrinkDrawer): JSX.Element => {
               </Button>
             </HStack>
           </DrawerBody>
-
-          {/* <DrawerFooter></DrawerFooter> */}
         </DrawerContent>
       </Drawer>
     </>

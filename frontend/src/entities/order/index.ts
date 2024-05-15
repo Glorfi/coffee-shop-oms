@@ -5,3 +5,9 @@ export {
   incrementDrinkQuantity,
   decrementDrinkQuantity,
 } from './model/orderFormSlice';
+
+export {
+  orderListSlice,
+  addItemToOrderList,
+  setInitialOrderList,
+} from './model/orderListSlice';

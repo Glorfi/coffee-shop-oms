@@ -1,5 +1,8 @@
+import { ComponentType, LazyExoticComponent } from 'react';
+
 export interface IAppRoute {
   path: string;
-  element: () => JSX.Element;
+  element: any;
+  // element: LazyExoticComponent<ComponentType<any>>;
   protected?: boolean;
 }

@@ -8,7 +8,7 @@ import {
   placeOrder,
   enterOrderRoom,
 } from '@/features/order';
-import { IOrder } from '@/entities/order';
+import { IOrder, addItemToOrderList } from '@/entities/order';
 
 export const socketMiddleware: Middleware = (store) => (next) => (action) => {
   if (socket.connect.match(action)) {
@@ -31,6 +31,7 @@ export const socketMiddleware: Middleware = (store) => (next) => (action) => {
       if (isAdmin) {
         socketInstance.on('createdOrders', (data: IOrder) => {
           store.dispatch(getIncomingOrders(data));
+          store.dispatch(addItemToOrderList(data));
         });
         store.dispatch(socket.enterAdminRoom());
       }

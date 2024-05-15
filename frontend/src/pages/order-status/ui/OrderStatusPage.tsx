@@ -8,7 +8,7 @@ export const OrderStatusPage = (): JSX.Element => {
     <>
       <BGComponent />
       {/* <BGClientComponent /> */}
-      <VStack p={'10px'}>
+      <VStack p={'10px'} maxW={'600px'} m={'0 auto'}>
         <ClientHeader />
         <OrderClientWidget />
       </VStack>

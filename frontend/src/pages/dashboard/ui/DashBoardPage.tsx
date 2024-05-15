@@ -1,11 +1,14 @@
+import { BGComponent } from '@/shared/ui/BgComponents/BgComponent';
 import { AdminHeader } from '@/widgets/header';
-import { Box } from '@chakra-ui/react';
+import { AdminOrderBoard } from '@/widgets/order';
+import { Box, VStack } from '@chakra-ui/react';
 
 export const DashBoardPage = (): JSX.Element => {
   return (
     <>
+      <BGComponent />
       <AdminHeader />
-      <Box>Dashboard</Box>
+      <AdminOrderBoard />
     </>
   );
 };

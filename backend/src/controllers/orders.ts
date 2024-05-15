@@ -6,24 +6,19 @@ import {
 } from '../interfaces/requests/ICreateOrder.js';
 import { NotFound } from '../errors/NotFound.js';
 
-// const getNextOrderNumber = (): Promise<number> => {
-//   return new Promise((resolve, reject) => {
-//     Orders.findOne({})
-//       .sort({ orderNumber: -1 })
-//       .exec((err: any, lastOrder: any) => {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           let orderNumber = 1;
-//           if (lastOrder) {
-//             orderNumber =
-//               lastOrder.orderNumber < 100 ? lastOrder.orderNumber + 1 : 1;
-//           }
-//           resolve(orderNumber);
-//         }
-//       });
-//   });
-// };
+export const getTodayOrders = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  Orders.find({ createdAt: { $gte: today } })
+    .populate({ path: 'drinks.drink', model: 'drinks' })
+    .then((orders) => res.send(orders))
+    .catch((err) => next(err));
+};
 
 export const getOrderById = (
   req: Request,

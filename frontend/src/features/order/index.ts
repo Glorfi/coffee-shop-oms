@@ -13,4 +13,7 @@ export {
   useGetOrderByIdQuery,
 } from './get-order/api/getOrderbyId';
 export { useGetCurrentOrder } from './get-order/api/useGetCurrentOrder';
+export { useGetTodayOrdersQuery } from './get-order/api/getTodayOrders';
 export { usePlaceOrderMutation } from './place-order/api/usePlaceOrderMutation';
+
+export { AdminOrderCard } from './change-status/ui/AdminOrderCard';

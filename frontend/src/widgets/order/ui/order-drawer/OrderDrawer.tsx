@@ -15,11 +15,13 @@ import {
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
-
 import { QuantityToggler, usePlaceOrderMutation } from '@/features/order';
 import { socketInstance } from '@/shared/socket/socket';
 import { useNavigate } from 'react-router-dom';
-import { BUTTON_MAKE_ORDER_TITLE, BUTTON_OPEN_TITLE } from './locolized-ui-titles';
+import {
+  BUTTON_MAKE_ORDER_TITLE,
+  BUTTON_OPEN_TITLE,
+} from './locolized-ui-titles';
 
 export const CreateOrderDrawer = (): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,11 +53,12 @@ export const CreateOrderDrawer = (): JSX.Element => {
         display={orderForm.drinks.length > 0 && !isOpen ? 'block' : 'none'}
         position={'fixed'}
         bottom={0}
-        left={0}
         p={'16px 24px'}
         borderRadius={'10'}
         bgColor={'whiteAlpha.900'}
         backdropFilter={'blur(2px)'}
+        maxW={'580px'}
+        m={'0 auto'}
       >
         <Button
           display={'grid'}
@@ -81,6 +84,8 @@ export const CreateOrderDrawer = (): JSX.Element => {
           borderRadius={'10'}
           backgroundColor={'whiteAlpha.900'}
           backdropFilter={'blur(2px)'}
+          maxW={'600px !important'}
+          m={'0 auto'}
         >
           <DrawerCloseButton />
           <DrawerHeader pb={0}>{BUTTON_OPEN_TITLE[lang]}</DrawerHeader>

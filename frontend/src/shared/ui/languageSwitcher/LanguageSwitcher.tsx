@@ -17,7 +17,7 @@ export const LanguageSwitcher = (): JSX.Element => {
     }
   }, [lang]);
   return (
-    <Menu>
+    <Menu >
       <MenuButton
         as={Button}
         size={'sm'}
@@ -26,7 +26,7 @@ export const LanguageSwitcher = (): JSX.Element => {
       >
         {label}
       </MenuButton>
-      <MenuList minW={'30px'}>
+      <MenuList minW={'30px'} zIndex={100}>
         <MenuItem maxW={'100px'} onClick={() => dispatch(setLanguage('hy'))}>
           AM
         </MenuItem>

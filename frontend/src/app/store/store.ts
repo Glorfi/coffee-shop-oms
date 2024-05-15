@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { langRouter } from '@/shared/utils/lang-slice';
 import { mainApi } from '@/shared/utils/main-api-router';
 import { categoryListSlice } from '@/entities/category';
-import { orderFormSlice } from '@/entities/order';
+import { orderFormSlice, orderListSlice } from '@/entities/order';
 import { socketSlice } from '@/app/store/socket-slice';
 import { socketMiddleware } from './socket-middleware';
 
@@ -18,6 +18,7 @@ export const store = configureStore({
     [langRouter.reducerPath]: langRouter.reducer,
     [categoryListSlice.reducerPath]: categoryListSlice.reducer,
     [orderFormSlice.reducerPath]: orderFormSlice.reducer,
+    [orderListSlice.reducerPath]: orderListSlice.reducer,
     [mainApi.reducerPath]: mainApi.reducer,
     ['socket']: socketReducer,
   },

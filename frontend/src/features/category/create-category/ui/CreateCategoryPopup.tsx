@@ -89,7 +89,7 @@ export const CreateCategoryPopUp = (
     <>
       <Button
         variant="solid"
-        colorScheme="teal"
+        colorScheme="darkGreen"
         size={'sm'}
         leftIcon={<FaPlus />}
         onClick={onOpen}

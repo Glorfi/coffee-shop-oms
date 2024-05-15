@@ -9,4 +9,5 @@ export const API_PATH = {
   CATEGORIES: '/categories',
   DRINKS: '/drinks',
   ORDERS: '/orders',
+  ORDERS_TODAY: '/orders/today'
 };
