@@ -19,9 +19,9 @@ export const AdminHeader = (): JSX.Element => {
     { to: APP_PATHS.DASHBOARD, title: 'Заказы' },
   ];
 
-  useEffect(() => {
-    console.log(path);
-  }, [path]);
+  // useEffect(() => {
+  //   console.log(path);
+  // }, [path]);
 
   return (
     <HStack

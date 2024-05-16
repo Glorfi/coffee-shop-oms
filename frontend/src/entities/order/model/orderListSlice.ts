@@ -23,14 +23,23 @@ const setInitialOrderListAction = (
   return newState;
 };
 
+const updateOrderAction = (state: IOrder[], action: PayloadAction<IOrder>) => {
+  const index = state.findIndex((order) => order._id === action.payload._id);
+  if (index !== -1) {
+    state[index] = action.payload;
+  }
+  return state;
+};
+
 export const orderListSlice = createSlice({
   name: 'orderList',
   initialState,
   reducers: {
     addItemToOrderList: addOrderAction,
     setInitialOrderList: setInitialOrderListAction,
+    replaceOrder: updateOrderAction,
   },
 });
 
-export const { addItemToOrderList, setInitialOrderList } =
+export const { addItemToOrderList, setInitialOrderList, replaceOrder } =
   orderListSlice.actions;

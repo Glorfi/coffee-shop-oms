@@ -7,6 +7,7 @@ export interface IDrinkOrder {
   status: 'created' | 'processing' | 'ready' | 'delivered';
   totalPrice: number;
   createdAt: Date;
+  updatedAt: Date;
   orderNumber: number;
 }
 

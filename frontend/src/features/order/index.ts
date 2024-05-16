@@ -5,6 +5,9 @@ export {
   onPlaceOrderSucess,
   onPlaceOrderError,
   enterOrderRoom,
+  updateOrderStatus,
+  onUpdateOrderSuccess,
+  onUpdateOrderError,
 } from './api/orderSocketSlice';
 export { QuantityToggler } from './change-drink-quantity/ui/QuantityToggler';
 

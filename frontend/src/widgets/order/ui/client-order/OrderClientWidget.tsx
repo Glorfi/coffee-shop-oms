@@ -20,10 +20,16 @@ export const OrderClientWidget = (): JSX.Element => {
   const { id } = useParams();
   const [getOrder, { data, isLoading, isSuccess }] = useLazyGetOrderByIdQuery();
   const currentOrder = useGetCurrentOrder();
+  const orderSubscription = useAppSelector(
+    (state) => state.socket.orders.updateOrderStatus.data
+  );
   const lang = useAppSelector((state) => state.lang.value);
   const dispatch = useAppDispatch();
 
   const [order, setOrder] = useState<IOrder | null>(currentOrder);
+  const [title, setTitle] = useState<string>('');
+  const [subtitle, setSubtitle] = useState<string>('');
+  const [progress, setProgress] = useState<number>(10);
 
   useEffect(() => {
     if (!currentOrder) {
@@ -34,10 +40,54 @@ export const OrderClientWidget = (): JSX.Element => {
   useEffect(() => {
     if (data) {
       setOrder(data);
+      // setTitle(ORDER_WIDGET_TITLE[data.status][lang]);
+      // setSubtitle(ORDER_WIDGET_SUBTITLE[data.status][lang]);
+      if (data.status === 'created') {
+        setProgress(10);
+      }
+      if (data.status === 'processing') {
+        setProgress(50);
+      }
+      if (data.status === 'ready') {
+        setProgress(80);
+      }
+      if (data.status === 'delivered') {
+        setProgress(100);
+      }
       dispatch(enterOrderRoom(data));
     }
   }, [data]);
 
+  useEffect(() => {
+    if (orderSubscription) {
+      setOrder(orderSubscription);
+      if (orderSubscription.status === 'created') {
+        setProgress(10);
+      }
+      if (orderSubscription.status === 'processing') {
+        setProgress(50);
+      }
+      if (orderSubscription.status === 'ready') {
+        setProgress(80);
+      }
+      if (orderSubscription.status === 'delivered') {
+        setProgress(100);
+      }
+    }
+  }, [orderSubscription, lang]);
+
+  useEffect(() => {
+    if (currentOrder) {
+      setOrder(currentOrder);
+    }
+  }, [currentOrder]);
+
+  useEffect(() => {
+    if (order) {
+      setTitle(ORDER_WIDGET_TITLE[order.status][lang]);
+      setSubtitle(ORDER_WIDGET_SUBTITLE[order.status][lang]);
+    }
+  }, [order, lang]);
   return (
     <VStack
       alignItems={'center'}
@@ -62,18 +112,18 @@ export const OrderClientWidget = (): JSX.Element => {
         fontWeight={'bold'}
         textAlign={'center'}
       >
-        {ORDER_WIDGET_TITLE[lang]}
+        {title}
       </Text>
       <Text
         color={'darkGreen.500'}
-        fontSize={'xs'}
+        fontSize={'md'}
         fontWeight={'bold'}
         textAlign={'center'}
       >
-        {ORDER_WIDGET_SUBTITLE[lang]}
+        {subtitle}
       </Text>
       <Progress
-        value={10}
+        value={progress}
         w={'100%'}
         borderRadius={'10'}
         colorScheme="darkGreen"

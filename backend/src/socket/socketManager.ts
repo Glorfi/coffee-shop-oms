@@ -1,8 +1,11 @@
 import { Server } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import http from 'http';
-import { placeOrder, placeOrderSocket } from '../controllers/orders.js';
-import { ICreateOrder } from '../interfaces/requests/ICreateOrder.js';
+
+import { handleAdminRoom } from './socket-listeners/AdminRoomListener.js';
+import { handleOrderRoom } from './socket-listeners/OrderRoomListener.js';
+import { handlePlaceOrder } from './socket-listeners/PlaceOrderListener.js';
+import { handleUpdateOrderStatus } from './socket-listeners/UpdateOrderStatusListener.js';
 
 export default function initializeSocket(server: http.Server) {
   const isDev = process.env.NODE_ENV !== 'production';
@@ -13,9 +16,9 @@ export default function initializeSocket(server: http.Server) {
         'http://localhost:3001',
         'https://admin.socket.io',
         'http://192.168.43.59:3001',
-      ], // снести перед деплоем
+      ],
       methods: ['GET', 'POST'],
-      credentials: true, // снести перед деплоем
+      credentials: true,
     },
   });
 
@@ -27,27 +30,18 @@ export default function initializeSocket(server: http.Server) {
     });
 
     socket.on('joinAdminRoom', () => {
-      socket.join('adminRoom');
-      console.log(`User ${socket.id} joined adminRoom`);
+      handleAdminRoom(socket);
     });
 
     socket.on('joinOrderRoom', (orderId) => {
-      socket.join(`OrderRoom_${orderId}`);
-      console.log(`User ${socket.id} joined "OrderRoom:${orderId}"`);
+      handleOrderRoom(socket, orderId);
     });
 
-    socket.on('placeOrder', (orderData) => {
-      const res = (data: any) => {
-        io.to('adminRoom').emit('createdOrders', data);
-        socket.emit(`placeOrderSuccess`, data);
-        socket.join(`OrderRoom_${data._id}`);
-        console.log(`User ${socket.id} created Order ${data._id}`);
-        console.log(`User ${socket.id} joined "OrderRoom:${data._id}"`);
-      };
-      const next = (err: any) => socket.emit('placeOrderError', err);
-      placeOrderSocket(orderData, res, next);
-    });
+    socket.on('placeOrder', handlePlaceOrder(socket, io));
+
+    socket.on('updateOrderStatus', handleUpdateOrderStatus(socket, io));
   });
+
   instrument(io, { auth: false });
   return io;
 }

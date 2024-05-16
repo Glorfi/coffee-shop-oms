@@ -7,8 +7,11 @@ import {
   onPlaceOrderSucess,
   placeOrder,
   enterOrderRoom,
+  updateOrderStatus,
+  onUpdateOrderSuccess,
+  onUpdateOrderError,
 } from '@/features/order';
-import { IOrder, addItemToOrderList } from '@/entities/order';
+import { IOrder, addItemToOrderList, replaceOrder } from '@/entities/order';
 
 export const socketMiddleware: Middleware = (store) => (next) => (action) => {
   if (socket.connect.match(action)) {
@@ -24,9 +27,17 @@ export const socketMiddleware: Middleware = (store) => (next) => (action) => {
       socketInstance.on('placeOrderSuccess', (data: IOrder) => {
         store.dispatch(onPlaceOrderSucess(data));
       });
+
       socketInstance.on('placeOrderError', (data) =>
         store.dispatch(onPlaceOrderError(data))
       );
+      socketInstance.on('updateOrderSuccess', (data) => {
+        store.dispatch(onUpdateOrderSuccess(data));
+        isAdmin ? store.dispatch(replaceOrder(data)) : null;
+      });
+      socketInstance.on('updateOrderError', (data) => {
+        store.dispatch(onUpdateOrderError(data));
+      });
 
       if (isAdmin) {
         socketInstance.on('createdOrders', (data: IOrder) => {
@@ -49,6 +60,10 @@ export const socketMiddleware: Middleware = (store) => (next) => (action) => {
 
   if (placeOrder.match(action)) {
     socketInstance.emit('placeOrder', action.payload);
+  }
+
+  if (updateOrderStatus.match(action)) {
+    socketInstance.emit('updateOrderStatus', action.payload);
   }
 
   if (socket.disconnect.match(action)) {

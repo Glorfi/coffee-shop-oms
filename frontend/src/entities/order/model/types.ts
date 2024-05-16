@@ -27,5 +27,6 @@ export interface IOrder {
   totalPrice: number;
   _id: string;
   createdAt: string;
+  updatedAt: string;
   __v: number;
 }

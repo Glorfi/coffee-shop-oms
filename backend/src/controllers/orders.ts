@@ -5,6 +5,7 @@ import {
   IDrinkOrder,
 } from '../interfaces/requests/ICreateOrder.js';
 import { NotFound } from '../errors/NotFound.js';
+import { IUpdateOrderStatus } from '../interfaces/requests/IUpdateOrderStatus.js';
 
 export const getTodayOrders = (
   req: Request,
@@ -91,4 +92,25 @@ export const placeOrderSocket = (
     .catch((err) => {
       next(err);
     });
+};
+
+export const updateOrderStatusSocket = (
+  orderData: IUpdateOrderStatus,
+  res: any,
+  next: any
+) => {
+  const date = new Date();
+  Orders.findByIdAndUpdate(
+    orderData._id,
+    { status: orderData.status, updatedAt: date },
+    { new: true }
+  )
+    .then((order) => {
+      if (!order) {
+        throw new NotFound('Order is not found');
+      }
+      return Orders.populate(order, { path: 'drinks.drink', model: 'drinks' });
+    })
+    .then((populatedOrder) => res(populatedOrder))
+    .catch((err) => next(err));
 };

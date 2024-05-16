@@ -1,8 +1,10 @@
 import { DrinkOrderItemAdmin } from '@/entities/drink';
-import { IOrder } from '@/entities/order';
-import { useAppSelector } from '@/shared/utils/hooks';
+import { IOrder, replaceOrder } from '@/entities/order';
+import { useAppDispatch, useAppSelector } from '@/shared/utils/hooks';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { VStack, Text, Box, HStack, Grid, IconButton } from '@chakra-ui/react';
+import { useUpdateOrderStatusMutation } from '../api/useUpdateOrderStatusMutation';
+import { useEffect, useState } from 'react';
 
 interface IAdminOrderCard {
   order: IOrder;
@@ -12,12 +14,37 @@ export const AdminOrderCard = (props: IAdminOrderCard): JSX.Element => {
   const { order } = props;
   const date = new Date(order.createdAt);
   const lang = useAppSelector((state) => state.lang.value);
+
   const cardColorByStatus = {
     created: 'blue',
     processing: 'orange',
     ready: 'darkGreen',
     delivered: 'purple',
   };
+  const [updateOrder, { data, error }] = useUpdateOrderStatusMutation();
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const statusList: Array<IOrder['status']> = [
+    'created',
+    'processing',
+    'ready',
+    'delivered',
+  ];
+
+  function handleForwardUpdateClick() {
+    const currentStatusIndex = statusList.indexOf(order.status);
+    if (currentStatusIndex !== -1) {
+      const nextStatusIndex = currentStatusIndex + 1;
+      updateOrder({ ...order, status: statusList[nextStatusIndex] });
+    }
+  }
+
+  function handleBackwardUpdateClick() {
+    const currentStatusIndex = statusList.indexOf(order.status);
+    if (currentStatusIndex !== -1) {
+      const previousStatusIndex = currentStatusIndex - 1;
+      updateOrder({ ...order, status: statusList[previousStatusIndex] });
+    }
+  }
 
   return (
     <VStack
@@ -39,7 +66,8 @@ export const AdminOrderCard = (props: IAdminOrderCard): JSX.Element => {
           colorScheme={cardColorByStatus[order.status]}
           size={'sm'}
           width={'fit-content'}
-          visibility={order.status !== "created" ? "visible" : "hidden"} 
+          visibility={order.status !== 'created' ? 'visible' : 'hidden'}
+          onClick={handleBackwardUpdateClick}
         />
 
         <Text
@@ -60,7 +88,8 @@ export const AdminOrderCard = (props: IAdminOrderCard): JSX.Element => {
           colorScheme={cardColorByStatus[order.status]}
           variant={'solid'}
           size={'sm'}
-          visibility={order.status !== "delivered" ? "visible" : "hidden"} 
+          visibility={order.status !== 'delivered' ? 'visible' : 'hidden'}
+          onClick={handleForwardUpdateClick}
         />
       </Grid>
       <Box width={'100%'}>
@@ -76,42 +105,8 @@ export const AdminOrderCard = (props: IAdminOrderCard): JSX.Element => {
           orderItem={drink}
           lang={lang}
           cardColor={cardColorByStatus[order.status]}
+          key={`${order._id}_${drink.drink._id}`}
         />
-        // <Grid
-        //   gap={0}
-        //   templateColumns={'3fr 1fr'}
-        //   bgColor={'blue.200'}
-        //   p={'10px'}
-        //   w={'100%'}
-        //   borderRadius={10}
-        // >
-        //   <Text fontSize={'lg'} fontWeight={'bold'} color={'primary'}>
-        //     {drink.drink.nameRU}
-        //   </Text>
-        //   <Text
-        //     fontSize={'lg'}
-        //     fontWeight={'bold'}
-        //     color={'primary'}
-        //     justifySelf={'end'}
-        //   >
-        //     {`x${drink.quantity}`}
-        //   </Text>
-        //   <Text
-        //     fontSize={'sm'}
-        //     //  fontWeight={'bold'}
-        //     color={'primary'}
-        //   >
-        //     {`${drink.variant} ${drink.size}`}
-        //   </Text>
-        //   <Text
-        //     fontSize={'sm'}
-        //     //  fontWeight={'bold'}
-        //     color={'primary'}
-        //     justifySelf={'end'}
-        //   >
-        //     {`${drink.price * drink.quantity} ֏`}
-        //   </Text>
-        // </Grid>
       ))}
       <Text
         fontSize={'lg'}

@@ -4,11 +4,13 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 interface IInitialState {
   incomingOrder: IOrder | null;
   placeOrder: { data: IOrder | null; error: any };
+  updateOrderStatus: { data: IOrder | null; error: any };
 }
 
 const initialState: IInitialState = {
   incomingOrder: null,
   placeOrder: { data: null, error: null },
+  updateOrderStatus: { data: null, error: null },
 };
 
 const getIncomingOrdersAction = (
@@ -47,6 +49,27 @@ const enterOrderRoomAction = (
   return state;
 };
 
+const updateOrderStatusAction = (
+  state: IInitialState,
+  action: PayloadAction<IOrder>
+) => {
+  return state;
+};
+
+const onUpdateOrderSuccessAction = (
+  state: IInitialState,
+  action: PayloadAction<IOrder>
+) => {
+  state.updateOrderStatus.data = action.payload;
+};
+
+const onUpdateOrderErrorAction = (
+  state: IInitialState,
+  action: PayloadAction<any>
+) => {
+  state.updateOrderStatus.error = action.payload;
+};
+
 export const orderSocketSlice = createSlice({
   name: 'orders',
   initialState,
@@ -56,6 +79,9 @@ export const orderSocketSlice = createSlice({
     onPlaceOrderSucess: onPlaceOrderSucessAction,
     onPlaceOrderError: onPlaceOrderErrorAction,
     enterOrderRoom: enterOrderRoomAction,
+    updateOrderStatus: updateOrderStatusAction,
+    onUpdateOrderSuccess: onUpdateOrderSuccessAction,
+    onUpdateOrderError: onUpdateOrderErrorAction,
   },
 });
 
@@ -65,4 +91,7 @@ export const {
   onPlaceOrderSucess,
   onPlaceOrderError,
   enterOrderRoom,
+  updateOrderStatus,
+  onUpdateOrderSuccess,
+  onUpdateOrderError,
 } = orderSocketSlice.actions;

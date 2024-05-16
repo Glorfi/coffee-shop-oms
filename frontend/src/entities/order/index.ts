@@ -10,4 +10,5 @@ export {
   orderListSlice,
   addItemToOrderList,
   setInitialOrderList,
+  replaceOrder,
 } from './model/orderListSlice';

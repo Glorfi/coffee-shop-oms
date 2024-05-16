@@ -1,4 +1,4 @@
-import { setInitialOrderList } from '@/entities/order';
+import { IOrder, setInitialOrderList } from '@/entities/order';
 import {
   AdminOrderCard,
   enterOrderRoom,
@@ -6,7 +6,7 @@ import {
 } from '@/features/order';
 import { useAppDispatch, useAppSelector } from '@/shared/utils/hooks';
 import { Badge, Grid, Tag, VStack, Text, Box } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 export const AdminOrderBoard = (): JSX.Element => {
   // const incomingOrder = useAppSelector(
@@ -15,6 +15,7 @@ export const AdminOrderBoard = (): JSX.Element => {
   const { data } = useGetTodayOrdersQuery();
   const dispatch = useAppDispatch();
   const orderList = useAppSelector((state) => state.orderList);
+  // const [orderList, setOrderList] = useState<IOrder[]>(orderListSub);
   // useEffect(() => {
   //   incomingOrder ? setOrderList([...orderList, incomingOrder]) : null;
   // }, [incomingOrder]);
@@ -29,6 +30,8 @@ export const AdminOrderBoard = (): JSX.Element => {
       });
     }
   }, [data]);
+
+
 
   return (
     <Grid
