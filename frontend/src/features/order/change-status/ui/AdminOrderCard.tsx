@@ -12,7 +12,8 @@ interface IAdminOrderCard {
 
 export const AdminOrderCard = (props: IAdminOrderCard): JSX.Element => {
   const { order } = props;
-  const date = new Date(order.createdAt);
+  const createdAt = new Date(order.createdAt);
+  const updatedAt = new Date(order.updatedAt);
   const lang = useAppSelector((state) => state.lang.value);
 
   const cardColorByStatus = {
@@ -97,7 +98,12 @@ export const AdminOrderCard = (props: IAdminOrderCard): JSX.Element => {
           fontSize={'sm'}
           // fontWeight={'bold'}
           color={'primary'}
-        >{`Cоздан: ${date.toLocaleTimeString().slice(0, -3)}`}</Text>
+        >{`Cоздан: ${createdAt.toLocaleTimeString().slice(0, -3)}`}</Text>
+                <Text
+          fontSize={'sm'}
+          // fontWeight={'bold'}
+          color={'primary'}
+        >{`Обновлен: ${updatedAt.toLocaleTimeString().slice(0, -3)}`}</Text>
         <Text fontSize={'sm'} color={'primary'}>{`ID: ${order._id}`}</Text>
       </Box>
       {order.drinks.map((drink) => (

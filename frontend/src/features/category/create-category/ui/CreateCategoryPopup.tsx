@@ -75,6 +75,16 @@ export const CreateCategoryPopUp = (
   }, [data]);
 
   useEffect(() => {
+    !isOpen
+      ? setFormValues({
+          nameRU: '',
+          nameEN: '',
+          nameAM: '',
+        })
+      : null;
+  }, [isOpen]);
+
+  useEffect(() => {
     if (isError) {
       toast({
         title: 'Что-то пошло не так, попробуйте еще раз!',

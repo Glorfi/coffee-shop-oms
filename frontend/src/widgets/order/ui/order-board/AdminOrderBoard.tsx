@@ -24,9 +24,9 @@ export const AdminOrderBoard = (): JSX.Element => {
     if (data && orderList.length === 0) {
       dispatch(setInitialOrderList(data));
       data.forEach((item) => {
-        if (item.status !== 'delivered') {
+      //  if (item.status !== 'delivered') {
           dispatch(enterOrderRoom(item));
-        }
+      //  }
       });
     }
   }, [data]);
@@ -35,7 +35,7 @@ export const AdminOrderBoard = (): JSX.Element => {
 
   return (
     <Grid
-      gridTemplateColumns={'1fr 1fr 1fr 1fr'}
+      gridTemplateColumns={'repeat(4, minmax(280px, 1fr))'}
       gap={'10px'}
       w={'100%'}
       maxWidth={'1200px'}

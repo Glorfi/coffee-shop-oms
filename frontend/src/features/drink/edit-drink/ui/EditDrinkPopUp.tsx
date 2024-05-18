@@ -166,7 +166,7 @@ export const EditDrinkPopUp = (props: IEditDrinkPopUp): JSX.Element => {
     <>
       <IconButton
         variant="ghost"
-        colorScheme="teal"
+        colorScheme="darkGreen"
         size={'xs'}
         aria-label="Call Sage"
         fontSize="20px"

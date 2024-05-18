@@ -59,6 +59,7 @@ export const CreateOrderDrawer = (): JSX.Element => {
         backdropFilter={'blur(2px)'}
         maxW={'580px'}
         m={'0 auto'}
+        zIndex={10}
       >
         <Button
           display={'grid'}
@@ -78,14 +79,21 @@ export const CreateOrderDrawer = (): JSX.Element => {
           >{`${orderForm.totalPrice} ֏`}</Text>
         </Button>
       </Box>
-      <Drawer isOpen={isOpen} placement="bottom" onClose={onClose} size={'lg'}>
+      <Drawer
+        isOpen={isOpen}
+        placement="bottom"
+        onClose={onClose}
+        size={'lg'}
+        blockScrollOnMount={false}
+      >
         <DrawerOverlay backgroundColor={'blackAlpha.200'} />
         <DrawerContent
           borderRadius={'10'}
           backgroundColor={'whiteAlpha.900'}
           backdropFilter={'blur(2px)'}
-          maxW={'600px !important'}
+          maxW={'580px !important'}
           m={'0 auto'}
+          left={'-10'}
         >
           <DrawerCloseButton />
           <DrawerHeader pb={0}>{BUTTON_OPEN_TITLE[lang]}</DrawerHeader>

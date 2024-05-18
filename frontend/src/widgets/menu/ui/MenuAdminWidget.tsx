@@ -22,7 +22,7 @@ export const MenuAdmindWidget = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const lang = useAppSelector((state) => state.lang.value);
- // const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
+  // const [lang, setLang] = useState<'en' | 'ru' | 'hy'>('ru');
 
   function rankDrinksByPrice(drinks: IDrink[]) {
     const sortedDrinks = [...drinks];
@@ -50,12 +50,14 @@ export const MenuAdmindWidget = (): JSX.Element => {
     }
   }, [data]);
   return (
-    <>
-      <HStack p={'0 20px'} mt={'10px'}>
-        <CreateCategoryPopUp />
-      </HStack>
+    <VStack
+      maxWidth={'1200px'}
+      m={'20px auto 0'}
+      p={['0 10px', '0 10px', '0 10px', '0 10px']}
+      alignItems={'flex-start'}
+    >
+      <CreateCategoryPopUp />
       <VStack
-        p={'20px'}
         alignContent={'flex-start'}
         alignItems={'flex-start'}
         width={'100%'}
@@ -84,6 +86,6 @@ export const MenuAdmindWidget = (): JSX.Element => {
           </CategoryMenuCard>
         ))}
       </VStack>
-    </>
+    </VStack>
   );
 };

@@ -31,16 +31,16 @@ export const CategoryMenuCard = (props: ICategoryMenuCard): JSX.Element => {
       alignItems={'flex-start'}
       {...rest}
       p={'10px'}
-      backgroundColor={'rgba(0 0 0 / 3%)'}
-      borderRadius={"10px"}
-      backdropFilter={"blur(2px)"}
+      borderRadius={'10'}
+      backgroundColor={'whiteAlpha.600'}
+      backdropFilter={'blur(2px)'}
     >
       <HStack
         alignItems={'baseline'}
         w={'100%'}
         justifyContent={'space-between'}
       >
-        <Text color={'primary'} fontSize={'xx-large'} fontWeight={'bold'}>
+        <Text color={'primary'} fontSize={'2xl'} fontWeight={'bold'}>
           {name}
         </Text>
         {features ? (

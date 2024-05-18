@@ -33,17 +33,17 @@ export const DrinkInfoLine = (props: IDrinkInfoLine): JSX.Element => {
       alignItems={'center'}
     >
       <VStack>
-        <Text color={'primary'} fontSize={'x-large'} fontWeight={'semibold'}>
+        <Text color={'primary'} fontSize={'md'} fontWeight={'semibold'}>
           {name}
         </Text>
         {description && (
-          <Text color={'primary'} fontSize={'large'} fontWeight={'regular'}>
+          <Text color={'primary'} fontSize={'md'} fontWeight={'regular'}>
             {description}
           </Text>
         )}
       </VStack>
       <HStack>
-        <Text color={'primary'} fontSize={'x-large'} fontWeight={'semibold'}>
+        <Text color={'primary'} fontSize={'md'} fontWeight={'semibold'}>
           {`${pricesString} ֏`}{' '}
         </Text>
         {features ? (
