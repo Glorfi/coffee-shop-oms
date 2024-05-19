@@ -16,6 +16,8 @@ export const Footer = (): JSX.Element => {
       width={'100%'}
       position={'relative'}
       borderRadius={'10px 10px 0'}
+      flexShrink={0}
+      //mt={"auto"}
       //zIndex={-1}
     >
       <Text color={'primary'} fontSize={'xs'}>

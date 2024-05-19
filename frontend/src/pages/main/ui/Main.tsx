@@ -17,6 +17,7 @@ export function MainPage() {
         p={order.length > 0 ? '10px 10px 38px' : '10px 10px 0'}
         maxW={'600px'}
         m={'0 auto'}
+        minH={'100dvh'}
       >
         <ClientHeader />
         <MenuInfoWidget />
