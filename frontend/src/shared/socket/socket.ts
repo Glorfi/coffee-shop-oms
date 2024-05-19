@@ -12,7 +12,7 @@ function handleURL() {
   return 'http://localhost:4000';
 }
 
-export const socketInstance = io(isProduction ? process.env.SOCKET_LINK || handleURL() : handleURL(), {
+export const socketInstance = io(isProduction ? process.env.VITE_SOCKET_LINK || handleURL() : handleURL(), {
   // extraHeaders: {
   //   'Access-Control-Allow-Credentials': 'true',
   // },
