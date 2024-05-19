@@ -4,12 +4,15 @@ const isProduction = process.env.NODE_ENV === 'production';
 const host = window.location.hostname;
 const URL_LOCALNETWORK = 'http://192.168.43.59:4000';
 const URL_LOCALHOST = 'http://localhost:4000';
+const envLink = process.env.VITE_SOCKET_LINK
+
+
 
 function handleURL() {
   if (host === '192.168.43.59') {
     return 'http://192.168.43.59:4000';
   }
-  return 'http://localhost:4000';
+  return 'https://coffee-shop-oms.onrender.com/';
 }
 
 export const socketInstance = io(isProduction ? process.env.VITE_SOCKET_LINK || handleURL() : handleURL(), {
