@@ -16,7 +16,8 @@ export default function initializeSocket(server: http.Server) {
         'http://localhost:3001',
         'https://admin.socket.io',
         'http://192.168.43.59:3001',
-        'https://coffee-shop-oms-17dd.onrender.com'
+        'https://coffee-shop-oms-17dd.onrender.com',
+        'https://demo-coffeshop.onrender.com'
       ],
       methods: ['GET', 'POST'],
       credentials: true,
