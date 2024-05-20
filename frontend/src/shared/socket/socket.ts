@@ -12,7 +12,7 @@ function handleURL() {
   if (host === '192.168.43.59') {
     return 'http://192.168.43.59:4000';
   }
-  return 'https://coffee-shop-oms.onrender.com/';
+  return 'http://localhost:4000';
 }
 
 export const socketInstance = io(isProduction ? socketLink || handleURL() : handleURL(), {

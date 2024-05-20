@@ -7,6 +7,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { SocketProvider } from './socket/socket-provider.tsx';
 import { theme } from '@/shared/ui/theme.ts';
 import { AppRouter } from './config/AppRouter.tsx';
+import { AudioNotificationProvider } from '@/shared/utils/AudioNotificationProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <SocketProvider>
         <ChakraProvider theme={theme}>
           <AppRouter />
+          <AudioNotificationProvider />
         </ChakraProvider>
       </SocketProvider>
     </Provider>
