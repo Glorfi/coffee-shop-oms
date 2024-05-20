@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const host = window.location.hostname;
 const URL_LOCALNETWORK = 'http://192.168.43.59:4000';
 const URL_LOCALHOST = 'http://localhost:4000';
-//const envLink = process.env.VITE_SOCKET_LINK
+const socketLink = import.meta.env.VITE_SOCKET_LINK
 
 
 
@@ -15,7 +15,7 @@ function handleURL() {
   return 'https://coffee-shop-oms.onrender.com/';
 }
 
-export const socketInstance = io(isProduction ? process.env.VITE_SOCKET_LINK || handleURL() : handleURL(), {
+export const socketInstance = io(isProduction ? socketLink || handleURL() : handleURL(), {
   // extraHeaders: {
   //   'Access-Control-Allow-Credentials': 'true',
   // },
